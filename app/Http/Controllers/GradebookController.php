@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gradebook;
 use Illuminate\Http\Request;
 
 class GradebookController extends Controller
@@ -11,7 +12,8 @@ class GradebookController extends Controller
      */
     public function index()
     {
-        //
+        $gradebooks = Gradebook::all();
+        return response()->json($gradebooks);
     }
 
     /**
@@ -19,7 +21,9 @@ class GradebookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $gradebook = Gradebook::create($request->all());
+
+        return response()->json($gradebook);
     }
 
     /**
@@ -27,7 +31,8 @@ class GradebookController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $gradebook = Gradebook::findOrFail($id);
+        return response()->json($gradebook);
     }
 
     /**
@@ -35,7 +40,9 @@ class GradebookController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $gradebook = Gradebook::findOrFail($id);
+        $gradebook->update($request->all());
+        return response()->json($gradebook);
     }
 
     /**
@@ -43,6 +50,7 @@ class GradebookController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $gradebook = Gradebook::findOrFail($id);
+        $gradebook->delete();
     }
 }

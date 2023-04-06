@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -11,7 +12,8 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        $comments = Comment::all();
+        return response()->json($comments);
     }
 
     /**
@@ -19,7 +21,9 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $comment = Comment::create($request->all());
+
+        return response()->json($comment);
     }
 
     /**
@@ -27,7 +31,8 @@ class CommentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        return response()->json($comment);
     }
 
     /**
@@ -35,7 +40,9 @@ class CommentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        $comment->update($request->all());
+        return response()->json($comment);
     }
 
     /**
@@ -43,6 +50,7 @@ class CommentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        $comment->delete();
     }
 }
