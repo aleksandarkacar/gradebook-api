@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddGradebookRequest;
 use App\Models\Gradebook;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class GradebookController extends Controller
@@ -12,16 +14,16 @@ class GradebookController extends Controller
      */
     public function index()
     {
-        $gradebooks = Gradebook::all();
+        $gradebooks = Gradebook::with('user')->get();
         return response()->json($gradebooks);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AddGradebookRequest $request)
     {
-        $gradebook = Gradebook::create($request->all());
+        $gradebook = Gradebook::create($request->validated());
 
         return response()->json($gradebook);
     }

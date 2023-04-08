@@ -13,17 +13,17 @@ class Gradebook extends Model
 
     protected $fillable = ['user_id', 'name'];
 
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function comments(): HasMany
+    public function comments()
     {
         return $this->hasMany(Comment::class);
     }
 
-    public function students(): HasMany
+    public function students()
     {
         return $this->hasMany(Student::class);
     }
