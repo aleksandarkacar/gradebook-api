@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddStudentRequest;
+use App\Models\Gradebook;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
@@ -19,9 +22,19 @@ class StudentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AddStudentRequest $request)
     {
-        $student = Student::create($request->all());
+        $user_id = Auth::user()->id;
+        $gradebook = Gradebook::where('user_id', $user_id)->get('id');
+        if ($gradebook[0]->id != $request->gradebook_id) {
+            return response()->json([
+                'error' => 'You are not authorized to add a student to this gradebook',
+                'user_id' => $user_id,
+                'gradebook[0]->id' => $gradebook[0]->id,
+                '$request->gradebook_id' => $request->gradebook_id
+            ], 403);
+        }
+        $student = Student::create($request->validated());
 
         return response()->json($student);
     }

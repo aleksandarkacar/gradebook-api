@@ -6,6 +6,7 @@ use App\Http\Requests\AddGradebookRequest;
 use App\Models\Gradebook;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GradebookController extends Controller
 {
@@ -33,8 +34,16 @@ class GradebookController extends Controller
      */
     public function show(string $id)
     {
-        $gradebook = Gradebook::findOrFail($id);
+        $gradebook = Gradebook::with('user', 'comments.user', 'students')->findOrFail($id);
         return response()->json($gradebook);
+    }
+
+    public function myGradebook()
+    {
+        $userId = Auth::user()->id;
+        $myGradebook = Gradebook::where('user_id', $userId)->with('user', 'comments', 'students')->firstOrFail();
+
+        return response()->json($myGradebook);
     }
 
     /**

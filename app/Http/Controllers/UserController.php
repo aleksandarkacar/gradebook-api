@@ -13,7 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::with('gradebook')->get();
         return response()->json($users);
     }
 
@@ -31,7 +31,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('gradebook', 'gradebook.comments', 'gradebook.students')->findOrFail($id);
         return response()->json($user);
     }
 

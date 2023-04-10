@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GradebookController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,7 @@ Route::delete('/users/{id}', [UserController::class, 'destroy'])->middleware('au
 Route::put('/users/{id}', [UserController::class, 'update'])->middleware('auth');
 
 Route::get('/gradebooks', [GradebookController::class, 'index'])->middleware('auth');
+Route::get('/mygradebook', [GradebookController::class, 'myGradebook'])->middleware('auth');
 Route::get('/gradebooks/{id}', [GradebookController::class, 'show'])->middleware('auth');
 Route::post('/gradebooks', [GradebookController::class, 'store'])->middleware('auth');
 Route::delete('/gradebooks/{id}', [GradebookController::class, 'destroy'])->middleware('auth');
