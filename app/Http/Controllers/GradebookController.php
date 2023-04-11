@@ -15,9 +15,10 @@ class GradebookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $gradebooks = Gradebook::with('user')->latest()->get();
+        $perPage = $request->input('per_page', 10);
+        $gradebooks = Gradebook::with('user')->latest()->paginate($perPage);
         return response()->json($gradebooks);
     }
 
