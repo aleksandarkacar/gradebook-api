@@ -30,4 +30,17 @@ class RegisterRequest extends FormRequest
             'terms_and_conditions' => 'required|accepted',
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'regex' => 'The password must be at least 8 characters long and contain at least one number.',
+            'password.min' => 'The password must be at least 8 characters long and contain at least one number.'
+        ];
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddGradebookRequest;
+use App\Http\Requests\EditGradebookRequest;
 use App\Models\Gradebook;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class GradebookController extends Controller
      */
     public function index()
     {
-        $gradebooks = Gradebook::with('user')->get();
+        $gradebooks = Gradebook::with('user')->latest()->get();
         return response()->json($gradebooks);
     }
 
@@ -34,7 +35,11 @@ class GradebookController extends Controller
      */
     public function show(string $id)
     {
-        $gradebook = Gradebook::with('user', 'comments.user', 'students')->findOrFail($id);
+        $gradebook = Gradebook::with('user', 'comments.user', 'students')
+            ->findOrFail($id)
+            ->load(['students' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            }]);
         return response()->json($gradebook);
     }
 
@@ -49,10 +54,10 @@ class GradebookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EditGradebookRequest $request, string $id)
     {
         $gradebook = Gradebook::findOrFail($id);
-        $gradebook->update($request->all());
+        $gradebook->update($request->validated());
         return response()->json($gradebook);
     }
 
