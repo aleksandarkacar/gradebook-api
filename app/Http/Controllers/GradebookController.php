@@ -8,6 +8,7 @@ use App\Models\Gradebook;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mockery\Undefined;
 
 class GradebookController extends Controller
 {
@@ -56,9 +57,19 @@ class GradebookController extends Controller
      */
     public function update(EditGradebookRequest $request, string $id)
     {
-        $gradebook = Gradebook::findOrFail($id);
-        $gradebook->update($request->validated());
-        return response()->json($gradebook);
+        $oldGradebook = Gradebook::findOrFail($id);
+        $user_id = Auth::user()->id;
+        return response()->json([$gradebook]);
+        if ($oldGradebook->user_id == $user_id) {
+            $oldGradebook->update($request->validated());
+            return response()->json($oldGradebook);
+        }
+        return response()->json([
+            'error' => 'You are not authorized to edit this gradebook',
+            'user_id' => $user_id,
+            'gradebook[0]->id' => $gradebook[0]->id,
+            '$request' => $request
+        ], 403);
     }
 
     /**
@@ -67,6 +78,15 @@ class GradebookController extends Controller
     public function destroy(string $id)
     {
         $gradebook = Gradebook::findOrFail($id);
-        $gradebook->delete();
+        $user_id = Auth::user()->id;
+        if ($gradebook->user_id == $user_id) {
+            $gradebook->delete();
+            return response()->json([], 200);
+        }
+        return response()->json([
+            'error' => 'You are not authorized to delete this gradebook',
+            'user_id' => $user_id,
+            'gradebook[0]->id' => $gradebook->user_id,
+        ], 403);
     }
 }

@@ -29,9 +29,9 @@ class StudentController extends Controller
         if ($gradebook[0]->id != $request->gradebook_id) {
             return response()->json([
                 'error' => 'You are not authorized to add a student to this gradebook',
-                'user_id' => $user_id,
-                'gradebook[0]->id' => $gradebook[0]->id,
-                '$request->gradebook_id' => $request->gradebook_id
+                // 'user_id' => $user_id,
+                // 'gradebook[0]->id' => $gradebook[0]->id,
+                // '$request->gradebook_id' => $request->gradebook_id
             ], 403);
         }
         $student = Student::create($request->validated());
