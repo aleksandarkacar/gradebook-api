@@ -76,4 +76,20 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Comment::class);
     }
+
+    public static function scopeSearchByFirstName($query, $first_name)
+    {
+        if (!$first_name) {
+            return $query;
+        }
+        return $query->where('first_name', 'like', "%$first_name%");
+    }
+
+    public static function scopeSearchByLastName($query, $last_name)
+    {
+        if (!$last_name) {
+            return $query;
+        }
+        return $query->where('last_name', 'like', "%$last_name%");
+    }
 }

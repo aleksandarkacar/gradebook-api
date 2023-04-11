@@ -17,8 +17,9 @@ class GradebookController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', 10);
-        $gradebooks = Gradebook::with('user')->latest()->paginate($perPage);
+        $perPage = $request->query('per_page', 10);
+        $name = $request->query('name', "");
+        $gradebooks = Gradebook::searchByName($name)->with('user')->latest()->paginate($perPage);
         return response()->json($gradebooks);
     }
 
@@ -60,7 +61,6 @@ class GradebookController extends Controller
     {
         $oldGradebook = Gradebook::findOrFail($id);
         $user_id = Auth::user()->id;
-        return response()->json([$gradebook]);
         if ($oldGradebook->user_id == $user_id) {
             $oldGradebook->update($request->validated());
             return response()->json($oldGradebook);
@@ -68,8 +68,6 @@ class GradebookController extends Controller
         return response()->json([
             'error' => 'You are not authorized to edit this gradebook',
             'user_id' => $user_id,
-            'gradebook[0]->id' => $gradebook[0]->id,
-            '$request' => $request
         ], 403);
     }
 

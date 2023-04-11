@@ -11,9 +11,11 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::with('gradebook')->latest()->get();
+        $first_name = $request->query('first_name', "");
+        $last_name = $request->query('last_name', "");
+        $users = User::searchByFirstName($first_name)->searchByLastName($last_name)->with('gradebook', 'gradebook.students')->latest()->get();
         return response()->json($users);
     }
 
