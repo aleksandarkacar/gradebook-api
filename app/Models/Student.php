@@ -10,7 +10,7 @@ class Student extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['gradebook_id', 'first_name', 'last_name'];
+    protected $fillable = ['gradebook_id', 'first_name', 'last_name', 'img_url'];
 
     public function gradebook(): BelongsTo
     {

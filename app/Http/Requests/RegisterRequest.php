@@ -25,7 +25,8 @@ class RegisterRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
-            'password' => 'required|string|min:8|regex:/^(?=.*\d)[A-Za-z\d\s]{8,}$/',
+            'password' => 'required|string|min:8|regex:/^(?=.*\d)[A-Za-z\d\s]{8,}$/|confirmed',
+            'password_confirmation' => 'required|string|min:8',
             'img_url' => 'required|string',
             'terms_and_conditions' => 'required|accepted',
         ];
@@ -40,7 +41,8 @@ class RegisterRequest extends FormRequest
     {
         return [
             'regex' => 'The password must be at least 8 characters long and contain at least one number.',
-            'password.min' => 'The password must be at least 8 characters long and contain at least one number.'
+            'password.min' => 'The password must be at least 8 characters long and contain at least one number.',
+            'password.confirmed' => 'The password confirmation does not match.'
         ];
     }
 }

@@ -53,7 +53,14 @@ class CommentController extends Controller
      */
     public function destroy(string $id)
     {
+        $user_id = Auth::user()->id;
         $comment = Comment::findOrFail($id);
-        $comment->delete();
+        if ($comment->user_id == $user_id) {
+            $comment->delete();
+            return response()->json([], 200);
+        }
+        return response()->json([
+            'error' => 'You are not authorized to delete this comment',
+        ], 403);
     }
 }

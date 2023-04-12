@@ -22,7 +22,7 @@ class AddCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body' => 'required|string|between:2,255',
+            'body' => 'required|string|between:2,1000',
             'gradebook_id' => 'required|exists:gradebooks,id|integer',
         ];
     }

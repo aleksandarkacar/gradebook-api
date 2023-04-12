@@ -25,6 +25,7 @@ class AddStudentRequest extends FormRequest
             'first_name' => 'required|string|between:2,255',
             'last_name' => 'required|string|between:2,255',
             'gradebook_id' => 'required|integer|exists:gradebooks,id',
+            'img_url' => 'required|string',
         ];
     }
 }

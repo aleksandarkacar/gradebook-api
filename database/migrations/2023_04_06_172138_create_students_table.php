@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('gradebook_id');
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('img_url');
             $table->timestamps();
         });
     }
